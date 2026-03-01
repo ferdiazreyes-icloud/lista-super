@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           Int        @id @default(autoincrement())
+  name         String     // Display name: "Aguacate"
+  category     String     // "Frutas y Verduras"
+  brand        String?    // "Los Volcanes"
+  ubereatsName String     @map("ubereats_name") // "Aguacate hass"
+  defaultQty   Int        @default(1) @map("default_qty")
+  unit         String     @default("pza") // pza, kg, paquete, manojo, pack, botella, lata, barra
+  notes        String?    // "SIEMPRE Los Volcanes"
+  sortOrder    Int        @default(0) @map("sort_order")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  listItems    ListItem[]
+
+  @@map("products")
+}
+
+model List {
+  id          Int              @id @default(autoincrement())
+  name        String?          // "Semana 2026-03-01" or "Pedido extraordinario"
+  status      String           @default("active") // active | closed
+  createdAt   DateTime         @default(now()) @map("created_at")
+  closedAt    DateTime?        @map("closed_at")
+  items       ListItem[]
+  customItems ListCustomItem[]
+
+  @@map("lists")
+}
+
+model ListItem {
+  id        Int      @id @default(autoincrement())
+  listId    Int      @map("list_id")
+  productId Int      @map("product_id")
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([listId, productId])
+  @@map("list_items")
+}
+
+model ListCustomItem {
+  id          Int      @id @default(autoincrement())
+  listId      Int      @map("list_id")
+  productName String   @map("product_name")
+  quantity    Int      @default(1)
+  unit        String   @default("pza")
+  createdAt   DateTime @default(now()) @map("created_at")
+  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  @@map("list_custom_items")
+}
