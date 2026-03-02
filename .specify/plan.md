@@ -58,16 +58,24 @@ Free-text items from "Otros" section.
 5. **`DELETE /api/lista/otros/:id`** — Remove custom item
 6. **`GET /api/lista/download`** — Generate and return .md file
 
-## Seed Script
+## Seed
 
-`scripts/seed.ts` reads `lista súper (UberEats).xlsx` using `xlsx` library and populates the `products` table with:
-- Product name, category, brand, UberEats name, default qty, unit (derived), notes, sort order
+Two mechanisms for populating products:
+
+1. **Local seed script** (`scripts/seed.ts`): reads `lista súper (UberEats).xlsx` using `xlsx` library. Useful for local dev.
+2. **API seed endpoint** (`/api/seed`): contains all 153 products hardcoded. Used for production (one-time visit to populate DB).
 
 ## Deployment (Railway)
 
-1. Connect GitHub repo
-2. Railway auto-detects Next.js
-3. Add PostgreSQL plugin
-4. Set DATABASE_URL env var (auto-populated by Railway)
-5. Build command: `npx prisma migrate deploy && npm run build`
-6. Start command: `npm start`
+- **Builder**: Railpack (auto-detects Next.js, no Dockerfile needed)
+- **Build command**: `npx prisma generate && npm run build`
+- **Start command**: `npx prisma db push && npx next start -H 0.0.0.0 -p ${PORT:-3000}`
+- **Variables**: `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`, `NODE_ENV` = `production`
+- **Networking**: port 8080 (Railway-assigned via $PORT)
+
+### Key deployment learnings
+
+- Railpack uses Dockerfile if present; removed to use native Next.js builder
+- `prisma generate` must run at build time (no DB needed), `prisma db push` at start time (needs DB access)
+- `postinstall` hooks break in Railpack's isolated dependency stage; moved to build command
+- Next.js must bind to `0.0.0.0` (not localhost) for Railway routing to work
