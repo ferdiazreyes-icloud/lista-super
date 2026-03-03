@@ -1,11 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { generateMarkdown } from "../src/lib/markdown";
+import { generateMarkdown, generateQuesoMarkdown, generateCarneMarkdown } from "../src/lib/markdown";
 
 // Mock data matching Prisma types
 const mockProduct = (overrides = {}) => ({
   id: 1,
   name: "Aguacate",
   category: "Frutas y Verduras",
+  store: "ubereats",
   brand: null,
   ubereatsName: "Aguacate hass",
   defaultQty: 5,
@@ -152,5 +153,177 @@ describe("generateMarkdown", () => {
 
     expect(md).toContain("# Pedido Supermercado — 2026-03-01");
     expect(md).toContain("**Total: 0 productos");
+  });
+});
+
+describe("generateQuesoMarkdown", () => {
+  const mockQuesoProduct = (overrides = {}) =>
+    mockProduct({
+      store: "queso",
+      ubereatsName: "",
+      defaultQty: 0,
+      ...overrides,
+    });
+
+  it("should generate header with Sr. del Queso title", () => {
+    const date = new Date("2026-03-01T12:00:00Z");
+    const items = [
+      mockListItem({
+        product: mockQuesoProduct({ name: "Oaxaca", category: "Quesos", unit: "kg" }),
+        quantity: 1,
+      }),
+    ];
+    const md = generateQuesoMarkdown(items, date);
+
+    expect(md).toContain("# Pedido Sr. del Queso — 2026-03-01");
+  });
+
+  it("should group items by queso categories", () => {
+    const items = [
+      mockListItem({
+        id: 1,
+        productId: 1,
+        quantity: 1,
+        product: mockQuesoProduct({ id: 1, name: "Oaxaca", category: "Quesos", unit: "kg" }),
+      }),
+      mockListItem({
+        id: 2,
+        productId: 2,
+        quantity: 2,
+        product: mockQuesoProduct({ id: 2, name: "Totopos", category: "Tortillas y Maíz", unit: "paq" }),
+      }),
+      mockListItem({
+        id: 3,
+        productId: 3,
+        quantity: 1,
+        product: mockQuesoProduct({ id: 3, name: "Hummus", category: "Cocina Libanesa", unit: "pza" }),
+      }),
+    ];
+
+    const md = generateQuesoMarkdown(items, new Date());
+
+    expect(md).toContain("### QUESOS");
+    expect(md).toContain("### TORTILLAS Y MAÍZ");
+    expect(md).toContain("### COCINA LIBANESA");
+    expect(md).toContain("| 1 | Oaxaca | 1 kg |");
+    expect(md).toContain("| 2 | Totopos | 2 paq |");
+    expect(md).toContain("| 3 | Hummus | 1 pza |");
+  });
+
+  it("should include total count for Sr. del Queso", () => {
+    const items = [
+      mockListItem({
+        id: 1,
+        productId: 1,
+        quantity: 1,
+        product: mockQuesoProduct({ id: 1, name: "Panela", category: "Quesos", unit: "kg" }),
+      }),
+      mockListItem({
+        id: 2,
+        productId: 2,
+        quantity: 3,
+        product: mockQuesoProduct({ id: 2, name: "Pan árabe", category: "Cocina Libanesa", unit: "paq" }),
+      }),
+    ];
+
+    const md = generateQuesoMarkdown(items, new Date());
+
+    expect(md).toContain("**Total: 2 productos | Tienda: Sr. del Queso**");
+  });
+
+  it("should use simple Producto/Cantidad table format", () => {
+    const items = [
+      mockListItem({
+        product: mockQuesoProduct({ name: "Manchego", category: "Quesos", unit: "kg" }),
+        quantity: 1,
+      }),
+    ];
+    const md = generateQuesoMarkdown(items, new Date());
+
+    expect(md).toContain("| # | Producto | Cantidad |");
+    expect(md).toContain("|---|---|---|");
+  });
+
+  it("should handle empty queso list", () => {
+    const md = generateQuesoMarkdown([], new Date("2026-03-01"));
+    expect(md).toContain("# Pedido Sr. del Queso — 2026-03-01");
+    expect(md).toContain("**Total: 0 productos | Tienda: Sr. del Queso**");
+  });
+});
+
+describe("generateCarneMarkdown", () => {
+  const mockCarneProduct = (overrides = {}) =>
+    mockProduct({
+      store: "carne",
+      ubereatsName: "",
+      defaultQty: 0,
+      unit: "kg",
+      ...overrides,
+    });
+
+  it("should generate header with Carne (Vecino) title", () => {
+    const date = new Date("2026-03-01T12:00:00Z");
+    const items = [
+      mockListItem({
+        product: mockCarneProduct({ name: "Arrachera", category: "Res" }),
+        quantity: 2,
+      }),
+    ];
+    const md = generateCarneMarkdown(items, date);
+
+    expect(md).toContain("# Pedido Carne (Vecino) — 2026-03-01");
+  });
+
+  it("should group items by carne categories", () => {
+    const items = [
+      mockListItem({
+        id: 1,
+        productId: 1,
+        quantity: 2,
+        product: mockCarneProduct({ id: 1, name: "Arrachera", category: "Res" }),
+      }),
+      mockListItem({
+        id: 2,
+        productId: 2,
+        quantity: 1,
+        product: mockCarneProduct({ id: 2, name: "Chicharrón delgado", category: "Cerdo" }),
+      }),
+      mockListItem({
+        id: 3,
+        productId: 3,
+        quantity: 1,
+        product: mockCarneProduct({ id: 3, name: "Pechuga sin hueso", category: "Pollo" }),
+      }),
+    ];
+
+    const md = generateCarneMarkdown(items, new Date());
+
+    expect(md).toContain("### RES");
+    expect(md).toContain("### CERDO");
+    expect(md).toContain("### POLLO");
+    expect(md).toContain("| 1 | Arrachera | 2 kg |");
+    expect(md).toContain("| 2 | Chicharrón delgado | 1 kg |");
+    expect(md).toContain("| 3 | Pechuga sin hueso | 1 kg |");
+  });
+
+  it("should include total count for Carne (Vecino)", () => {
+    const items = [
+      mockListItem({
+        id: 1,
+        productId: 1,
+        quantity: 2,
+        product: mockCarneProduct({ id: 1, name: "Rib Eye", category: "Res" }),
+      }),
+    ];
+
+    const md = generateCarneMarkdown(items, new Date());
+
+    expect(md).toContain("**Total: 1 productos | Tienda: Carne (Vecino)**");
+  });
+
+  it("should handle empty carne list", () => {
+    const md = generateCarneMarkdown([], new Date("2026-03-01"));
+    expect(md).toContain("# Pedido Carne (Vecino) — 2026-03-01");
+    expect(md).toContain("**Total: 0 productos | Tienda: Carne (Vecino)**");
   });
 });

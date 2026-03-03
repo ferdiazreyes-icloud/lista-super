@@ -2,6 +2,7 @@ export interface ProductWithSelection {
   id: number;
   name: string;
   category: string;
+  store: string;
   brand: string | null;
   ubereatsName: string;
   defaultQty: number;
@@ -29,5 +30,7 @@ export interface ListData {
     createdAt: string;
   };
   products: ProductWithSelection[];
+  quesoProducts: ProductWithSelection[];
+  carneProducts: ProductWithSelection[];
   customItems: CustomItem[];
 }

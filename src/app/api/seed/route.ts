@@ -157,28 +157,149 @@ const PRODUCTS = [
   { name: "Gel fijador", category: "Cuidado Personal", brand: "Grisi", ubereatsName: "Gel fijador de manzanilla máximo control (400 g)", defaultQty: 1, unit: "paquete", notes: null, sortOrder: 11153 }
 ];
 
+// Sr. del Queso products (44 products, 6 subcategories)
+const QUESO_PRODUCTS = [
+  // QUESOS (12)
+  { name: "Oaxaca", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20001 },
+  { name: "Panela", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20002 },
+  { name: "Manchego", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20003 },
+  { name: "Chihuahua curado", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20004 },
+  { name: "Gouda", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20005 },
+  { name: "De Chiapas", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20006 },
+  { name: "Parmesano rallado", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20007 },
+  { name: "Gouda rallado", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20008 },
+  { name: "Feta", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20009 },
+  { name: "Queso cabra español", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20010 },
+  { name: "Crema de rancho", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20011 },
+  { name: "Cottage", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20012 },
+  // TORTILLAS Y MAÍZ (8)
+  { name: "Tortilla maíz", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20013 },
+  { name: "Totopos", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20014 },
+  { name: "Tiritas para sopa", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20015 },
+  { name: "Tortilla harina", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20016 },
+  { name: "Sopes", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: "8 pzas", sortOrder: 20017 },
+  { name: "Nopal con chía", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20018 },
+  { name: "Betabel con quinoa", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20019 },
+  { name: "Tostadas de nopal", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20020 },
+  // COCINA LIBANESA (5)
+  { name: "Pan árabe", category: "Cocina Libanesa", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20021 },
+  { name: "Pan árabe tostado", category: "Cocina Libanesa", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20022 },
+  { name: "Hummus", category: "Cocina Libanesa", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20023 },
+  { name: "Jocoque", category: "Cocina Libanesa", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20024 },
+  { name: "Aceituna Kalamata", category: "Cocina Libanesa", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "¼ kg", sortOrder: 20025 },
+  // POLLO (7)
+  { name: "Pechuga entera", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20026 },
+  { name: "Pechuga deshuesada", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20027 },
+  { name: "Molida de pechuga", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20028 },
+  { name: "Milanesa de pollo", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20029 },
+  { name: "Pierna de pollo", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20030 },
+  { name: "Muslo de pollo", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20031 },
+  { name: "Alitas", category: "Pollo", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20032 },
+  // SALCHICHONERÍA (4)
+  { name: "Chorizo español", category: "Salchichonería", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20033 },
+  { name: "Chorizo argentino", category: "Salchichonería", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20034 },
+  { name: "Longaniza", category: "Salchichonería", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20035 },
+  { name: "Chistorra", category: "Salchichonería", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20036 },
+  // ORGÁNICOS (8)
+  { name: "Aceite de Coco", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: null, sortOrder: 20037 },
+  { name: "Arroz blanco", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20038 },
+  { name: "Avena", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20039 },
+  { name: "Frijol Negro", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20040 },
+  { name: "Lenteja", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20041 },
+  { name: "Aceite de Oliva Virgen", category: "Orgánicos", store: "queso", brand: "Aires del Campo", ubereatsName: "", defaultQty: 0, unit: "pza", notes: "500 ml", sortOrder: 20042 },
+  { name: "Miel de abeja cruda", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "350 g", sortOrder: 20043 },
+  { name: "Docenera libre pastoreo", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "Huevos", sortOrder: 20044 },
+];
+
+// Carne Vecino products (36 products, 3 subcategories — all sold by kg)
+const CARNE_PRODUCTS = [
+  // RES (17)
+  { name: "Arrachera", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30001 },
+  { name: "Filete de res limpio", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30002 },
+  { name: "Rib Eye", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30003 },
+  { name: "New York", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30004 },
+  { name: "T Bone", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30005 },
+  { name: "Sirloin / Churrasco", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30006 },
+  { name: "Vacío", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30007 },
+  { name: "Picaña", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30008 },
+  { name: "Asado de tira", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30009 },
+  { name: "Cecina natural", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30010 },
+  { name: "Costilla de res", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30011 },
+  { name: "Bistec 1era", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30012 },
+  { name: "Molida especial", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30013 },
+  { name: "Falda", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30014 },
+  { name: "Chamberete sin hueso", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30015 },
+  { name: "Chamberete con hueso", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30016 },
+  { name: "Tuétano", category: "Res", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30017 },
+  // CERDO (15)
+  { name: "Chicharrón delgado", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30018 },
+  { name: "Chicharrón carnudo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30019 },
+  { name: "Chicharrón prensado", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30020 },
+  { name: "Tocino", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30021 },
+  { name: "Pastor", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30022 },
+  { name: "Cecina enchilada", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30023 },
+  { name: "Chuleta natural", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30024 },
+  { name: "Chuleta ahumada", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30025 },
+  { name: "Costilla de cerdo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30026 },
+  { name: "Bistec de cerdo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30027 },
+  { name: "Molida de cerdo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30028 },
+  { name: "Filete de cerdo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30029 },
+  { name: "Lomo de cerdo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30030 },
+  { name: "Pierna de cerdo", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30031 },
+  { name: "Baby Back Ribs", category: "Cerdo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30032 },
+  // POLLO (4)
+  { name: "Pechuga con hueso", category: "Pollo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30033 },
+  { name: "Pechuga sin hueso", category: "Pollo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30034 },
+  { name: "Milanesa de pollo", category: "Pollo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30035 },
+  { name: "Pierna y muslo", category: "Pollo", store: "carne", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 30036 },
+];
+
 /**
- * GET /api/seed — One-time endpoint to populate products from Excel data.
- * Visit this URL once after deploy, then remove the endpoint.
+ * GET /api/seed — Endpoint to populate products from Excel data.
+ * Checks each store independently so new stores can be added without re-seeding existing ones.
  */
 export async function GET() {
   try {
-    const existing = await prisma.product.count();
-    if (existing > 0) {
-      return NextResponse.json({
-        message: `Ya hay ${existing} productos en la base de datos. No se hizo nada.`,
-        count: existing,
-      });
+    const results: string[] = [];
+
+    // Seed UberEats products
+    const ubereatsCount = await prisma.product.count({ where: { store: "ubereats" } });
+    if (ubereatsCount === 0) {
+      for (const p of PRODUCTS) {
+        await prisma.product.create({ data: { ...p, store: "ubereats" } });
+      }
+      results.push(`UberEats: ${PRODUCTS.length} productos cargados`);
+    } else {
+      results.push(`UberEats: ya existían ${ubereatsCount} productos`);
     }
 
-    for (const p of PRODUCTS) {
-      await prisma.product.create({ data: p });
+    // Seed Sr. del Queso products
+    const quesoCount = await prisma.product.count({ where: { store: "queso" } });
+    if (quesoCount === 0) {
+      for (const p of QUESO_PRODUCTS) {
+        await prisma.product.create({ data: p });
+      }
+      results.push(`Sr. del Queso: ${QUESO_PRODUCTS.length} productos cargados`);
+    } else {
+      results.push(`Sr. del Queso: ya existían ${quesoCount} productos`);
     }
 
-    const count = await prisma.product.count();
+    // Seed Carne Vecino products
+    const carneCount = await prisma.product.count({ where: { store: "carne" } });
+    if (carneCount === 0) {
+      for (const p of CARNE_PRODUCTS) {
+        await prisma.product.create({ data: p });
+      }
+      results.push(`Carne Vecino: ${CARNE_PRODUCTS.length} productos cargados`);
+    } else {
+      results.push(`Carne Vecino: ya existían ${carneCount} productos`);
+    }
+
+    const total = await prisma.product.count();
     return NextResponse.json({
-      message: `¡Listo! Se cargaron ${count} productos.`,
-      count,
+      message: `¡Listo! Total: ${total} productos.`,
+      details: results,
+      total,
     });
   } catch (error) {
     console.error("Seed error:", error);

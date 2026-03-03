@@ -28,8 +28,8 @@ export async function GET() {
       });
     }
 
-    // Get all products
-    const products = await prisma.product.findMany({
+    // Get all products grouped by store
+    const allProducts = await prisma.product.findMany({
       orderBy: { sortOrder: "asc" },
     });
 
@@ -38,6 +38,17 @@ export async function GET() {
       list.items.map((item) => [item.productId, item.quantity])
     );
 
+    const mapProduct = (p: typeof allProducts[0]) => ({
+      ...p,
+      selected: selections.has(p.id),
+      quantity: selections.get(p.id) ?? (p.defaultQty > 0 ? p.defaultQty : 1),
+    });
+
+    // Split products by store
+    const ubereatsProducts = allProducts.filter((p) => p.store === "ubereats").map(mapProduct);
+    const quesoProducts = allProducts.filter((p) => p.store === "queso").map(mapProduct);
+    const carneProducts = allProducts.filter((p) => p.store === "carne").map(mapProduct);
+
     return NextResponse.json({
       list: {
         id: list.id,
@@ -45,11 +56,9 @@ export async function GET() {
         status: list.status,
         createdAt: list.createdAt,
       },
-      products: products.map((p) => ({
-        ...p,
-        selected: selections.has(p.id),
-        quantity: selections.get(p.id) ?? p.defaultQty,
-      })),
+      products: ubereatsProducts,
+      quesoProducts,
+      carneProducts,
       customItems: list.customItems,
     });
   } catch (error) {

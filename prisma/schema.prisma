@@ -11,9 +11,10 @@ model Product {
   id           Int        @id @default(autoincrement())
   name         String     // Display name: "Aguacate"
   category     String     // "Frutas y Verduras"
+  store        String     @default("ubereats") // ubereats | queso | carne
   brand        String?    // "Los Volcanes"
-  ubereatsName String     @map("ubereats_name") // "Aguacate hass"
-  defaultQty   Int        @default(1) @map("default_qty")
+  ubereatsName String     @default("") @map("ubereats_name") // "Aguacate hass" (only for ubereats)
+  defaultQty   Int        @default(1) @map("default_qty") // 0 = no default (user must set)
   unit         String     @default("pza") // pza, kg, paquete, manojo, pack, botella, lata, barra
   notes        String?    // "SIEMPRE Los Volcanes"
   sortOrder    Int        @default(0) @map("sort_order")

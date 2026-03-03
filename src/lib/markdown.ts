@@ -121,3 +121,116 @@ function buildSearchName(product: Product): string {
   }
   return name;
 }
+
+/**
+ * Generate a markdown file for Sr. del Queso order.
+ * Simple format: product name + quantity + unit.
+ */
+export function generateQuesoMarkdown(
+  items: ItemWithProduct[],
+  listDate: Date
+): string {
+  const dateStr = listDate.toISOString().split("T")[0];
+  const lines: string[] = [];
+
+  lines.push("# Pedido Sr. del Queso — " + dateStr);
+  lines.push("");
+
+  // Group items by category
+  const grouped = new Map<string, ItemWithProduct[]>();
+  for (const item of items) {
+    const cat = item.product.category;
+    if (!grouped.has(cat)) grouped.set(cat, []);
+    grouped.get(cat)!.push(item);
+  }
+
+  const categoryOrder = [
+    "Quesos",
+    "Tortillas y Maíz",
+    "Cocina Libanesa",
+    "Pollo",
+    "Salchichonería",
+    "Orgánicos",
+  ];
+
+  let counter = 1;
+
+  for (const category of categoryOrder) {
+    const catItems = grouped.get(category);
+    if (!catItems || catItems.length === 0) continue;
+
+    lines.push(`### ${category.toUpperCase()}`);
+    lines.push("");
+    lines.push("| # | Producto | Cantidad |");
+    lines.push("|---|---|---|");
+
+    for (const item of catItems) {
+      lines.push(
+        `| ${counter} | ${item.product.name} | ${item.quantity} ${item.product.unit} |`
+      );
+      counter++;
+    }
+
+    lines.push("");
+  }
+
+  lines.push("---");
+  lines.push(
+    `**Total: ${counter - 1} productos | Tienda: Sr. del Queso**`
+  );
+
+  return lines.join("\n");
+}
+
+/**
+ * Generate a markdown file for Carne (Vecino) order.
+ * Simple format: product name + quantity in kg.
+ */
+export function generateCarneMarkdown(
+  items: ItemWithProduct[],
+  listDate: Date
+): string {
+  const dateStr = listDate.toISOString().split("T")[0];
+  const lines: string[] = [];
+
+  lines.push("# Pedido Carne (Vecino) — " + dateStr);
+  lines.push("");
+
+  // Group items by category
+  const grouped = new Map<string, ItemWithProduct[]>();
+  for (const item of items) {
+    const cat = item.product.category;
+    if (!grouped.has(cat)) grouped.set(cat, []);
+    grouped.get(cat)!.push(item);
+  }
+
+  const categoryOrder = ["Res", "Cerdo", "Pollo"];
+
+  let counter = 1;
+
+  for (const category of categoryOrder) {
+    const catItems = grouped.get(category);
+    if (!catItems || catItems.length === 0) continue;
+
+    lines.push(`### ${category.toUpperCase()}`);
+    lines.push("");
+    lines.push("| # | Producto | Cantidad |");
+    lines.push("|---|---|---|");
+
+    for (const item of catItems) {
+      lines.push(
+        `| ${counter} | ${item.product.name} | ${item.quantity} ${item.product.unit} |`
+      );
+      counter++;
+    }
+
+    lines.push("");
+  }
+
+  lines.push("---");
+  lines.push(
+    `**Total: ${counter - 1} productos | Tienda: Carne (Vecino)**`
+  );
+
+  return lines.join("\n");
+}

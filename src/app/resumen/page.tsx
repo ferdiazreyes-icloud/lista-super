@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ListData, ProductWithSelection, CustomItem } from "@/lib/types";
 
-const CATEGORY_ORDER = [
+const UBEREATS_CATEGORY_ORDER = [
   "Frutas y Verduras",
   "Lácteos y Huevo",
   "Pan y Tortilla",
@@ -17,7 +17,7 @@ const CATEGORY_ORDER = [
   "Cuidado Personal",
 ];
 
-const CATEGORY_EMOJIS: Record<string, string> = {
+const UBEREATS_CATEGORY_EMOJIS: Record<string, string> = {
   "Frutas y Verduras": "🥬",
   "Lácteos y Huevo": "🥛",
   "Pan y Tortilla": "🍞",
@@ -31,8 +31,143 @@ const CATEGORY_EMOJIS: Record<string, string> = {
   "Cuidado Personal": "🧴",
 };
 
+const QUESO_CATEGORY_ORDER = [
+  "Quesos",
+  "Tortillas y Maíz",
+  "Cocina Libanesa",
+  "Pollo",
+  "Salchichonería",
+  "Orgánicos",
+];
+
+const QUESO_CATEGORY_EMOJIS: Record<string, string> = {
+  "Quesos": "🧀",
+  "Tortillas y Maíz": "🌽",
+  "Cocina Libanesa": "🧆",
+  "Pollo": "🍗",
+  "Salchichonería": "🌭",
+  "Orgánicos": "🌿",
+};
+
+const CARNE_CATEGORY_ORDER = ["Res", "Cerdo", "Pollo"];
+const CARNE_CATEGORY_EMOJIS: Record<string, string> = {
+  "Res": "🥩",
+  "Cerdo": "🐷",
+  "Pollo": "🍗",
+};
+
+function groupByCategory(products: ProductWithSelection[]): Map<string, ProductWithSelection[]> {
+  const grouped = new Map<string, ProductWithSelection[]>();
+  for (const p of products) {
+    if (!grouped.has(p.category)) grouped.set(p.category, []);
+    grouped.get(p.category)!.push(p);
+  }
+  return grouped;
+}
+
+function StoreSummarySection({
+  title,
+  emoji,
+  categoryOrder,
+  categoryEmojis,
+  products,
+  downloadStore,
+  borderColor,
+  bgColor,
+  textColor,
+}: {
+  title: string;
+  emoji: string;
+  categoryOrder: string[];
+  categoryEmojis: Record<string, string>;
+  products: ProductWithSelection[];
+  downloadStore: string;
+  borderColor: string;
+  bgColor: string;
+  textColor: string;
+}) {
+  const grouped = groupByCategory(products);
+  const count = products.length;
+
+  if (count === 0) return null;
+
+  return (
+    <div className="mb-6">
+      {/* Store header */}
+      <div className={`mx-4 mb-3 rounded-xl ${bgColor} p-3`}>
+        <div className="flex items-center justify-between">
+          <h2 className={`text-base font-bold ${textColor}`}>
+            {emoji} {title}
+          </h2>
+          <span className={`text-sm font-bold ${textColor}`}>{count} productos</span>
+        </div>
+      </div>
+
+      {/* Categories */}
+      {categoryOrder.map((category) => {
+        const catProducts = grouped.get(category);
+        if (!catProducts || catProducts.length === 0) return null;
+        const catEmoji = categoryEmojis[category] || "📋";
+
+        return (
+          <section key={category} className="mb-3">
+            <h3 className="px-4 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {catEmoji} {category}
+            </h3>
+            <div className={`mx-4 overflow-hidden rounded-lg border ${borderColor}`}>
+              <table className="w-full text-sm">
+                <tbody>
+                  {catProducts.map((p, i) => (
+                    <tr
+                      key={p.id}
+                      className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                    >
+                      <td className="px-3 py-2 font-medium text-gray-800">
+                        {p.name}
+                        {p.brand && (
+                          <span className="ml-1 text-xs text-gray-400">
+                            {p.brand}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-right font-bold text-green-700">
+                        {p.quantity}{" "}
+                        <span className="font-normal text-gray-400">
+                          {p.unit}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        );
+      })}
+
+      {/* Download button for this store */}
+      <div className="mx-4 mt-2">
+        <a
+          href={`/api/lista/download?store=${downloadStore}`}
+          className={`action-btn block text-center ${
+            downloadStore === "ubereats"
+              ? "bg-green-600 active:bg-green-700"
+              : downloadStore === "queso"
+              ? "bg-yellow-600 active:bg-yellow-700"
+              : "bg-red-600 active:bg-red-700"
+          }`}
+        >
+          📥 Descargar .md — {title} ({count})
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export default function ResumenPage() {
-  const [products, setProducts] = useState<ProductWithSelection[]>([]);
+  const [ubereatsProducts, setUbereatsProducts] = useState<ProductWithSelection[]>([]);
+  const [quesoProducts, setQuesoProducts] = useState<ProductWithSelection[]>([]);
+  const [carneProducts, setCarneProducts] = useState<ProductWithSelection[]>([]);
   const [customItems, setCustomItems] = useState<CustomItem[]>([]);
   const [listName, setListName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -47,7 +182,9 @@ export default function ResumenPage() {
       const res = await fetch("/api/lista");
       if (!res.ok) throw new Error("Error");
       const data: ListData = await res.json();
-      setProducts(data.products.filter((p) => p.selected));
+      setUbereatsProducts(data.products.filter((p) => p.selected));
+      setQuesoProducts(data.quesoProducts.filter((p) => p.selected));
+      setCarneProducts(data.carneProducts.filter((p) => p.selected));
       setCustomItems(data.customItems);
       setListName(data.list.name || "Lista del Súper");
     } catch (err) {
@@ -55,10 +192,6 @@ export default function ResumenPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleDownload = () => {
-    window.location.href = "/api/lista/download";
   };
 
   const handleNewList = async () => {
@@ -75,14 +208,10 @@ export default function ResumenPage() {
     }
   };
 
-  // Group selected products by category
-  const grouped = new Map<string, ProductWithSelection[]>();
-  for (const p of products) {
-    if (!grouped.has(p.category)) grouped.set(p.category, []);
-    grouped.get(p.category)!.push(p);
-  }
-
-  const totalCount = products.length + customItems.length;
+  const ubereatsCount = ubereatsProducts.length + customItems.length;
+  const quesoCount = quesoProducts.length;
+  const carneCount = carneProducts.length;
+  const totalCount = ubereatsCount + quesoCount + carneCount;
 
   if (loading) {
     return (
@@ -123,57 +252,39 @@ export default function ResumenPage() {
         </div>
       ) : (
         <main className="pt-2">
-          {/* Summary count */}
+          {/* Total summary count */}
           <div className="mx-4 mb-4 rounded-xl bg-green-50 p-4 text-center">
             <p className="text-3xl font-bold text-green-700">{totalCount}</p>
-            <p className="text-sm text-green-600">productos en el pedido</p>
+            <p className="text-sm text-green-600">productos en total</p>
+            {(quesoCount > 0 || carneCount > 0) && (
+              <p className="mt-1 text-xs text-green-500">
+                {ubereatsCount > 0 && `UberEats: ${ubereatsCount}`}
+                {ubereatsCount > 0 && quesoCount > 0 && " · "}
+                {quesoCount > 0 && `Sr. Queso: ${quesoCount}`}
+                {(ubereatsCount > 0 || quesoCount > 0) && carneCount > 0 && " · "}
+                {carneCount > 0 && `Carne: ${carneCount}`}
+              </p>
+            )}
           </div>
 
-          {/* Category groups */}
-          {CATEGORY_ORDER.map((category) => {
-            const catProducts = grouped.get(category);
-            if (!catProducts || catProducts.length === 0) return null;
-            const emoji = CATEGORY_EMOJIS[category] || "📋";
+          {/* UberEats section */}
+          {ubereatsCount > 0 && (
+            <StoreSummarySection
+              title="Chedraui Selecto (UberEats)"
+              emoji="🛒"
+              categoryOrder={UBEREATS_CATEGORY_ORDER}
+              categoryEmojis={UBEREATS_CATEGORY_EMOJIS}
+              products={ubereatsProducts}
+              downloadStore="ubereats"
+              borderColor="border-gray-200"
+              bgColor="bg-green-50"
+              textColor="text-green-800"
+            />
+          )}
 
-            return (
-              <section key={category} className="mb-4">
-                <h3 className="px-4 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                  {emoji} {category}
-                </h3>
-                <div className="mx-4 overflow-hidden rounded-lg border border-gray-200">
-                  <table className="w-full text-sm">
-                    <tbody>
-                      {catProducts.map((p, i) => (
-                        <tr
-                          key={p.id}
-                          className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                        >
-                          <td className="px-3 py-2 font-medium text-gray-800">
-                            {p.name}
-                            {p.brand && (
-                              <span className="ml-1 text-xs text-gray-400">
-                                {p.brand}
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-3 py-2 text-right font-bold text-green-700">
-                            {p.quantity}{" "}
-                            <span className="font-normal text-gray-400">
-                              {p.unit}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            );
-          })}
-
-          {/* Custom items */}
+          {/* Custom items (only for UberEats) */}
           {customItems.length > 0 && (
-            <section className="mb-4">
+            <section className="mb-6">
               <h3 className="px-4 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
                 ✍️ Otros (captura libre)
               </h3>
@@ -201,20 +312,42 @@ export default function ResumenPage() {
               </div>
             </section>
           )}
+
+          {/* Sr. del Queso section */}
+          {quesoCount > 0 && (
+            <StoreSummarySection
+              title="Sr. del Queso"
+              emoji="🧀"
+              categoryOrder={QUESO_CATEGORY_ORDER}
+              categoryEmojis={QUESO_CATEGORY_EMOJIS}
+              products={quesoProducts}
+              downloadStore="queso"
+              borderColor="border-yellow-200"
+              bgColor="bg-yellow-50"
+              textColor="text-yellow-800"
+            />
+          )}
+
+          {/* Carne (Vecino) section */}
+          {carneCount > 0 && (
+            <StoreSummarySection
+              title="Carne (Vecino)"
+              emoji="🥩"
+              categoryOrder={CARNE_CATEGORY_ORDER}
+              categoryEmojis={CARNE_CATEGORY_EMOJIS}
+              products={carneProducts}
+              downloadStore="carne"
+              borderColor="border-red-200"
+              bgColor="bg-red-50"
+              textColor="text-red-800"
+            />
+          )}
         </main>
       )}
 
       {/* Bottom actions */}
       <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 bg-white p-3 shadow-lg">
         <div className="mx-auto flex max-w-lg flex-col gap-2">
-          {totalCount > 0 && (
-            <button
-              onClick={handleDownload}
-              className="action-btn bg-green-600 active:bg-green-700"
-            >
-              📥 Descargar .md ({totalCount} productos)
-            </button>
-          )}
           <button
             onClick={handleNewList}
             disabled={creatingNew}
