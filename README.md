@@ -1,25 +1,28 @@
 # super-lista — Portal de Lista del Súper
 
-Portal web mobile-first para capturar el pedido semanal del supermercado. Reemplaza la hoja impresa que se llena a mano.
+Portal web mobile-first para capturar el pedido semanal del supermercado. Reemplaza la hoja impresa que se llena a mano. Soporta tres tiendas: UberEats/Chedraui, Sr. del Queso y Carne (Vecino).
 
-## Estado actual: v0.1.0 (MVP) — Desplegado
+## Estado actual: v0.2.0 — Multi-tienda
 
 **URL:** https://lista-super-production.up.railway.app
 
 ### Implementado
 
-- [x] Catálogo de 153 productos cargados desde el Excel maestro
-- [x] Vista mobile-first con productos organizados por 11 categorías
+- [x] Catálogo de 233 productos (153 UberEats + 44 Sr. del Queso + 36 Carne Vecino)
+- [x] Vista mobile-first con productos organizados por tienda y categoría
+- [x] **UberEats/Chedraui**: 153 productos en 11 categorías, con cantidades default y marcas
+- [x] **Sr. del Queso**: 44 productos en 6 categorías (Quesos, Tortillas, Cocina Libanesa, Pollo, Salchichonería, Orgánicos)
+- [x] **Carne (Vecino)**: 36 productos en 3 categorías (Res, Cerdo, Pollo) — todo por kg
 - [x] Selección de productos con tap (toggle on/off)
-- [x] Cantidades default pre-cargadas, ajustables con +/-
-- [x] Unidades de medida derivadas (pza, kg, paquete, manojo, pack, etc.)
-- [x] Sección "Otros" para captura libre (texto + cantidad + unidad)
-- [x] Página de resumen con todos los productos seleccionados
-- [x] Descarga de archivo `.md` compatible con skill `/pedir-super`
+- [x] Cantidades default pre-cargadas (UberEats), sin default (Queso y Carne empiezan en 1)
+- [x] Unidades de medida derivadas (pza, kg, paquete, manojo, pack, paq, etc.)
+- [x] Sección "Otros" para captura libre (solo UberEats)
+- [x] Página de resumen con productos agrupados por tienda → categoría
+- [x] **3 botones de descarga `.md`** — uno por tienda
 - [x] Botón "Nueva lista" para reiniciar (semanal o pedido extraordinario)
 - [x] Deploy en Railway (Next.js + PostgreSQL)
-- [x] Dominio público generado por Railway
-- [x] Endpoint `/api/seed` para carga inicial de productos
+- [x] Endpoint `/api/seed` para carga de productos (soporta carga incremental por tienda)
+- [x] 26 tests (3 suites): markdown UberEats + markdown Queso + markdown Carne + derivación de unidades
 
 ### Pendiente
 
@@ -35,7 +38,9 @@ https://lista-super-production.up.railway.app
 |---|---|
 | Lista de productos | `/` |
 | Resumen del pedido | `/resumen` |
-| Descargar .md | `/api/lista/download` |
+| Descargar .md UberEats | `/api/lista/download?store=ubereats` |
+| Descargar .md Sr. del Queso | `/api/lista/download?store=queso` |
+| Descargar .md Carne (Vecino) | `/api/lista/download?store=carne` |
 
 ## Cómo correr localmente
 
@@ -73,7 +78,7 @@ Abrir http://localhost:3000
 |---|---|
 | `make setup` | Hace todo el setup de una vez (DB + schema + seed + dev) |
 | `make dev` | Inicia servidor de desarrollo |
-| `make test` | Corre los tests (17 tests) |
+| `make test` | Corre los tests (26 tests) |
 | `make seed` | Carga productos del Excel |
 | `make up` | Levanta todo con Docker |
 | `make down` | Apaga Docker |
@@ -85,7 +90,7 @@ Abrir http://localhost:3000
 npm run test
 ```
 
-- **17 tests** (2 suites): generación de markdown + derivación de unidades de medida
+- **26 tests** (3 suites): generación de markdown (UberEats + Sr. del Queso + Carne Vecino) + derivación de unidades de medida
 - Framework: Vitest
 
 ## Tech Stack
@@ -111,10 +116,12 @@ El proyecto se despliega automáticamente al hacer push a `main`.
 
 ### Seed de productos
 
-Los productos se cargaron una sola vez visitando `/api/seed`. Si se necesita recargar:
+Los productos se cargan visitando `/api/seed`. El endpoint verifica cada tienda independientemente:
+- Si UberEats ya tiene productos, no los recarga
+- Si Sr. del Queso o Carne no tienen productos, los carga
 
-1. Borrar productos existentes desde Prisma Studio o la DB directamente
-2. Visitar `https://lista-super-production.up.railway.app/api/seed`
+Para cargar productos nuevos tras un deploy con cambios:
+1. Visitar `https://lista-super-production.up.railway.app/api/seed`
 
 ## Estructura del proyecto
 
@@ -126,12 +133,17 @@ super-lista/
 ├── src/
 │   ├── app/            # Next.js pages + API routes
 │   │   ├── api/lista/  # API: lista, items, otros, download
-│   │   ├── api/seed/   # API: seed one-time (productos hardcoded)
-│   │   ├── resumen/    # Página de resumen
+│   │   ├── api/seed/   # API: seed (UberEats + Queso + Carne)
+│   │   ├── resumen/    # Página de resumen (3 secciones + 3 descargas)
 │   │   └── page.tsx    # Página principal (lista de productos)
-│   ├── components/     # React components (ProductCard, CategorySection, OtrosSection)
-│   └── lib/            # Utilities (prisma client, markdown generator, types)
-├── tests/              # Vitest tests (markdown + units)
+│   ├── components/     # React components
+│   │   ├── ProductCard.tsx       # Tarjeta producto UberEats
+│   │   ├── StoreProductCard.tsx  # Tarjeta producto Queso/Carne
+│   │   ├── CategorySection.tsx   # Sección de categoría UberEats
+│   │   ├── StoreSection.tsx      # Sección de tienda (Queso/Carne)
+│   │   └── OtrosSection.tsx      # Captura libre (UberEats)
+│   └── lib/            # Utilities (prisma client, markdown generators, types)
+├── tests/              # Vitest tests (markdown UberEats + Queso + Carne + units)
 ├── docker-compose.yml  # Local dev (PostgreSQL)
 └── Makefile            # Standard commands
 ```

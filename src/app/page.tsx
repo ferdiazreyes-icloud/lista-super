@@ -3,7 +3,23 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import CategorySection from "@/components/CategorySection";
 import OtrosSection from "@/components/OtrosSection";
+import StoreSection from "@/components/StoreSection";
 import { ListData, ProductWithSelection, CustomItem } from "@/lib/types";
+
+const QUESO_CATEGORY_ORDER = [
+  "Quesos",
+  "Tortillas y Maíz",
+  "Cocina Libanesa",
+  "Pollo",
+  "Salchichonería",
+  "Orgánicos",
+];
+
+const CARNE_CATEGORY_ORDER = [
+  "Res",
+  "Cerdo",
+  "Pollo",
+];
 
 const CATEGORY_ORDER = [
   "Frutas y Verduras",
@@ -21,6 +37,8 @@ const CATEGORY_ORDER = [
 
 export default function HomePage() {
   const [products, setProducts] = useState<ProductWithSelection[]>([]);
+  const [quesoProducts, setQuesoProducts] = useState<ProductWithSelection[]>([]);
+  const [carneProducts, setCarneProducts] = useState<ProductWithSelection[]>([]);
   const [customItems, setCustomItems] = useState<CustomItem[]>([]);
   const [listName, setListName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -41,6 +59,8 @@ export default function HomePage() {
       if (!res.ok) throw new Error("Error al cargar datos");
       const data: ListData = await res.json();
       setProducts(data.products);
+      setQuesoProducts(data.quesoProducts);
+      setCarneProducts(data.carneProducts);
       setCustomItems(data.customItems);
       setListName(data.list.name || "Lista del Súper");
       setError(null);
@@ -52,15 +72,25 @@ export default function HomePage() {
     }
   };
 
+  // Helper to update a product in any of the three lists
+  const updateProductInLists = useCallback(
+    (productId: number, updater: (p: ProductWithSelection) => ProductWithSelection) => {
+      setProducts((prev) => prev.map((p) => (p.id === productId ? updater(p) : p)));
+      setQuesoProducts((prev) => prev.map((p) => (p.id === productId ? updater(p) : p)));
+      setCarneProducts((prev) => prev.map((p) => (p.id === productId ? updater(p) : p)));
+    },
+    []
+  );
+
   // Toggle product selection
   const handleToggle = useCallback(
     (productId: number, selected: boolean, quantity: number) => {
-      // Optimistic update
-      setProducts((prev) =>
-        prev.map((p) =>
-          p.id === productId ? { ...p, selected, quantity: selected ? quantity : p.defaultQty } : p
-        )
-      );
+      // Optimistic update across all lists
+      updateProductInLists(productId, (p) => ({
+        ...p,
+        selected,
+        quantity: selected ? quantity : (p.defaultQty > 0 ? p.defaultQty : 1),
+      }));
 
       // API call
       fetch("/api/lista/items", {
@@ -73,16 +103,14 @@ export default function HomePage() {
         fetchData();
       });
     },
-    []
+    [updateProductInLists]
   );
 
   // Update quantity (debounced API call)
   const handleQuantityChange = useCallback(
     (productId: number, quantity: number) => {
-      // Optimistic update
-      setProducts((prev) =>
-        prev.map((p) => (p.id === productId ? { ...p, quantity } : p))
-      );
+      // Optimistic update across all lists
+      updateProductInLists(productId, (p) => ({ ...p, quantity }));
 
       // Debounce the API call
       const existing = debounceRef.current.get(productId);
@@ -102,7 +130,7 @@ export default function HomePage() {
 
       debounceRef.current.set(productId, timer);
     },
-    []
+    [updateProductInLists]
   );
 
   // Add custom item
@@ -139,9 +167,12 @@ export default function HomePage() {
     }
   }, []);
 
-  // Count selected
+  // Count selected across all stores
   const selectedCount =
-    products.filter((p) => p.selected).length + customItems.length;
+    products.filter((p) => p.selected).length +
+    quesoProducts.filter((p) => p.selected).length +
+    carneProducts.filter((p) => p.selected).length +
+    customItems.length;
 
   // Group products by category
   const grouped = new Map<string, ProductWithSelection[]>();
@@ -215,6 +246,26 @@ export default function HomePage() {
           items={customItems}
           onAdd={handleAddCustom}
           onRemove={handleRemoveCustom}
+        />
+
+        {/* Sr. del Queso */}
+        <StoreSection
+          storeTitle="Sr. del Queso"
+          storeEmoji="🧀"
+          categoryOrder={QUESO_CATEGORY_ORDER}
+          products={quesoProducts}
+          onToggle={handleToggle}
+          onQuantityChange={handleQuantityChange}
+        />
+
+        {/* Carne (Vecino) */}
+        <StoreSection
+          storeTitle="Carne (Vecino)"
+          storeEmoji="🥩"
+          categoryOrder={CARNE_CATEGORY_ORDER}
+          products={carneProducts}
+          onToggle={handleToggle}
+          onQuantityChange={handleQuantityChange}
         />
       </main>
 
