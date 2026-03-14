@@ -157,7 +157,7 @@ const PRODUCTS = [
   { name: "Gel fijador", category: "Cuidado Personal", brand: "Grisi", ubereatsName: "Gel fijador de manzanilla máximo control (400 g)", defaultQty: 1, unit: "paquete", notes: null, sortOrder: 11153 }
 ];
 
-// Sr. del Queso products (44 products, 6 subcategories)
+// Sr. del Queso products (71 products, 7 subcategories)
 const QUESO_PRODUCTS = [
   // QUESOS (12)
   { name: "Oaxaca", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20001 },
@@ -209,6 +209,34 @@ const QUESO_PRODUCTS = [
   { name: "Aceite de Oliva Virgen", category: "Orgánicos", store: "queso", brand: "Aires del Campo", ubereatsName: "", defaultQty: 0, unit: "pza", notes: "500 ml", sortOrder: 20042 },
   { name: "Miel de abeja cruda", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "350 g", sortOrder: 20043 },
   { name: "Docenera libre pastoreo", category: "Orgánicos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "Huevos", sortOrder: 20044 },
+  // PESCADO CONGELADO (27)
+  { name: "Atún medallón (Indonesia)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20045 },
+  { name: "Atún lomo (importado)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20046 },
+  { name: "Basa (filetes)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20047 },
+  { name: "Cabezas de robalo para caldo", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20048 },
+  { name: "Calamar aro de Español", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20049 },
+  { name: "Callo de hacha de Indonesia", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20050 },
+  { name: "Camarón azul U15 de Sinaloa", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20051 },
+  { name: "Camarón pacotilla", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20052 },
+  { name: "Camarón 41/50 sin cabeza Mazatlán", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20053 },
+  { name: "Carne de Cangrejo (tipo surimi) Japonés, Osaki", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20054 },
+  { name: "Cazón filete", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20055 },
+  { name: "Ceviche de robalo", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20056 },
+  { name: "Huachinango (lonja)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20057 },
+  { name: "Huachinango en filetes", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20058 },
+  { name: "Jaiba (pulpa casi limpia)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20059 },
+  { name: "Langostinos (Indonesia)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "908 gr", sortOrder: 20060 },
+  { name: "Marlin ahumado Mazatlán", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20061 },
+  { name: "Manos de cangrejo moro grande (Ensenada BC)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20062 },
+  { name: "Mejillón Nueva Zelanda (media concha)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20063 },
+  { name: "Pulpo Baby español", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "908 gr", sortOrder: 20064 },
+  { name: "Róbalo silvestre Noruega (lonja)", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20065 },
+  { name: "Róbalo en filetes", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20066 },
+  { name: "Salmón ahumado Chileno", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20067 },
+  { name: "Salmón ahumado Kosher", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: "100 gr", sortOrder: 20068 },
+  { name: "Salmón silvestre importado", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20069 },
+  { name: "Salmón importado en filetes", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20070 },
+  { name: "Tilapia importada en filetes", category: "Pescado Congelado", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20071 },
 ];
 
 // Carne Vecino products (36 products, 3 subcategories — all sold by kg)

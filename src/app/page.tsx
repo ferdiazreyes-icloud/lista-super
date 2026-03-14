@@ -13,6 +13,7 @@ const QUESO_CATEGORY_ORDER = [
   "Pollo",
   "Salchichonería",
   "Orgánicos",
+  "Pescado Congelado",
 ];
 
 const CARNE_CATEGORY_ORDER = [

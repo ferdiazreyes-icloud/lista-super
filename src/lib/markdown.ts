@@ -151,6 +151,7 @@ export function generateQuesoMarkdown(
     "Pollo",
     "Salchichonería",
     "Orgánicos",
+    "Pescado Congelado",
   ];
 
   let counter = 1;
