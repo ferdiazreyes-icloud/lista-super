@@ -157,9 +157,9 @@ const PRODUCTS = [
   { name: "Gel fijador", category: "Cuidado Personal", brand: "Grisi", ubereatsName: "Gel fijador de manzanilla máximo control (400 g)", defaultQty: 1, unit: "paquete", notes: null, sortOrder: 11153 }
 ];
 
-// Sr. del Queso products (71 products, 7 subcategories)
+// Sr. del Queso products (69 products, 7 subcategories)
 const QUESO_PRODUCTS = [
-  // QUESOS (12)
+  // QUESOS (11)
   { name: "Oaxaca", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20001 },
   { name: "Panela", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20002 },
   { name: "Manchego", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20003 },
@@ -168,18 +168,16 @@ const QUESO_PRODUCTS = [
   { name: "De Chiapas", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20006 },
   { name: "Parmesano rallado", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20007 },
   { name: "Gouda rallado", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20008 },
-  { name: "Feta", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20009 },
   { name: "Queso cabra español", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20010 },
   { name: "Crema de rancho", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20011 },
   { name: "Cottage", category: "Quesos", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "pza", notes: "200 g", sortOrder: 20012 },
-  // TORTILLAS Y MAÍZ (8)
+  // TORTILLAS Y MAÍZ (7)
   { name: "Tortilla maíz", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: null, sortOrder: 20013 },
   { name: "Totopos", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20014 },
   { name: "Tiritas para sopa", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20015 },
   { name: "Tortilla harina", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "kg", notes: "½ kg", sortOrder: 20016 },
   { name: "Sopes", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: "8 pzas", sortOrder: 20017 },
   { name: "Nopal con chía", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20018 },
-  { name: "Betabel con quinoa", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20019 },
   { name: "Tostadas de nopal", category: "Tortillas y Maíz", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20020 },
   // COCINA LIBANESA (5)
   { name: "Pan árabe", category: "Cocina Libanesa", store: "queso", brand: null, ubereatsName: "", defaultQty: 0, unit: "paq", notes: null, sortOrder: 20021 },
